@@ -1,6 +1,6 @@
 # dimML.js
 ## HTML Template engine. Separate your structure from your data.
-A template JS plug-in to your structure from your data (AppML style), more simple to use, ore flexible, and with support to Nested elements. 
+A template JS plug-in to separate your structure from your data. Like AppML, but more simple to use, more flexible, and with support for Nested elements. 
 It can populate Arrays or Objects. These can contain either Arrays or Objects! 
  
 ## By Dimitris Vainanidis (c) 2021. #
@@ -36,9 +36,13 @@ Use `data-variable` and the inner Text of your div/span will display the value o
     <div data-variable>authorName</div>
 
 ```
-The result is:
+The result converts to :
 ```
-Dimitris
+    <div>Dimitris</div>
+```
+with output: 
+```
+    Dimitris
 ```
 
 
@@ -117,7 +121,7 @@ The result is:
 <hr>
 
 
-## **Simple Object that contains keys and values**
+## **Simple single Object that contains keys and values**
 
 For simple Objects (Object of keys with values), use `{{0}}` or `{{key}}` for the key and `{{value}}` for the value:
 ```HTML
@@ -148,7 +152,7 @@ The result is:
 
 ## **Basic example of nested things**
 
-When you use nested elements, a nice thing to use is the `data-identifier` attribute. It is used, so the `{{0}}` of the different nested objects/arrays are not being mixed up / overridden. This attribute declares how you want to call its children in the template. So, you can use `{{newName}}` instead of `{{0}}` in this case. 
+When you use nested elements, a nice thing to use is the `data-identifier` attribute. It is used, so the `{{0}}` of the different nested objects/arrays are not being mixed up / overridden. In this attribute you state how you want to call the element's children in the template. So, you can use `{{newName}}`, instead of `{{0}}` in this case. 
 
 To nest things, use  `data-source="{{upper}}"` to point to the "upper" thing. With that being said:
 
@@ -176,15 +180,13 @@ The result is:
 > * My friend, Cate, has these traits:
 > * My friend, Silvia, has these traits: blonde beautiful witty
 
-Notice that because there is not `Cate` array, the output is clear (without errors or ugly `{{things}}`). 
+Notice that because there is not a `Cate` array, the output is clear (without errors or ugly `{{things}}`). 
 <hr>
 
 
 ## **Object that contains keys and "array" values**
 
-When you use nested elements, a nice thing to use is the `data-identifier` attribute. It is used, so the `{{0}}` of the different nested objects/arrays are not being mixed up / overridden. This attribute declares how you want to call its children. So, you use `{{newName}}` instead of `{{0}}` in this case. With this being said.... 
-
-For an Object with "array" values (its is an extension of the previous case), use `data-identifier="section"`, so its immediate children will be called `section`, to separate its grand-children which will be called `categories`. So the nested sub-list will have the `data-source="Life['{{section}}']"`. Notice, that in the nested sub-list, we can display also the `section` variable.
+For an Object with "array" values (its is an extension of a previous case), use `data-identifier="section"`, so its immediate children will be called `section`, to separate its grand-children which will be called `categories`. So the nested sub-list will have the `data-source="Life['{{section}}']"` which is an array, so it can be iterated using the  `data-source` attribute. Notice, that in the nested sub-list, we can display also the `section` variable.
 ```HTML
 <script>
     const Life = { 
@@ -290,9 +292,11 @@ Result:
 # **3. Weird Cases**
 
 
-## **Array that contains Arrays**
+## **Array that contains Arrays that contain arrays**
 
-Notice that the base is not consistent yet!!! In the element's body, `{{1}}` is the first element of the array, i.e. the base is the `1`. Instead, in the `data-source` attribute, the base is the original Javascript base, i.e. `0`, so the first element is `{{0}`. Sorry... 
+Notice that the base is not consistent yet!!! In the element's body, `{{1}}` is the first element of the array, i.e. the base is the `1`. Instead, in the `data-source` attribute, the base is the original Javascript base, i.e. `0`, so the first element is `{{0}`. Sorry about that! I am going to fix that in some next version... 
+
+So, you can use `{{this}}` which is going to take as a value the current index (i.e.,0,1,2) in every iteration. So, the `SmallLife[{{this}}][1]"` will be an array, so it can be iterated using the `data-source` attribute. 
 
 ```HTML
 <script>
@@ -323,10 +327,10 @@ Notice that the base is not consistent yet!!! In the element's body, `{{1}}` is 
 
 Result:
 > SmallLife:
-> * Health and Security - [click this link: health-link]
+> * Health and Security - [health-link]
 >   + Health and Security - Health
 >   + Health and Security - Safety and Security
-> * Relationships - [click this link: relationships-link]
+> * Relationships - [relationships-link]
 >   + Relationships - Self Image
 >   + Relationships - Sexual
 
@@ -335,7 +339,7 @@ Result:
 
 ## **Object that contains keys and "arrays with arrays" values**
 
-In the following case, `ComplexLife["Health and Security"][0]` is the array `["Health","Safety and Security"]`. In the general case, the `ComplexLife['{{section}}'][0]`, as an array, it can be iterated using `data-source`. So: 
+In the following case, `ComplexLife["Health and Security"][0]` is the array `["Health","Safety and Security"]`. In the general case, the `ComplexLife['{{section}}'][0]`, as an array, it can be iterated using the `data-source` attribute. Again, the base in `{{section[1]}}` is not consistent at this moment, so you need to experiment (sorry again!). So: 
 
 ```HTML
 <script>
@@ -365,7 +369,7 @@ Result:
 >   + Relationships - Self Image
 >   + Relationships - Sexual
 
-The above result can be obtained also with another way, given that `ComplexLife['{{section}}'][0]` is a simple variable (not an array), so we can use `data-variable`:
+The above result can be obtained also with another way, using the fact that that `ComplexLife['{{section}}'][1]` is a single variable (not an array), so we can use `data-variable`:
 ```HTML
 <p>ComplexLifeAlternative</p>
 <ul data-source="ComplexLife" data-identifier="section">

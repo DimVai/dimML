@@ -135,4 +135,3 @@ function EvalVariables(element=document, keepAttribute=false){
     })
 }
 EvalVariables(document)
-//EvalVariables(document.querySelector('#testDiv'))
