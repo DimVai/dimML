@@ -19,20 +19,73 @@
     
 
 
+
+
+
+
 <h1>Dim-ML</h1>
 
-<div data-source="author"></div>
+<script>let author = 'Dimitris'</script>
+
+<div id="testDiv">
+<div data-variable>author</div>
+</div>
 <hr>
 
 
-<p>Nested (Χέστιντ!)</p>
 
-<ul data-source="MediumCategorizationObject" data-identifier="section">
+
+
+
+<script>
+    const Life = { 
+        "Health and Security": ["Health","Safety and Security"],
+        "Wealth":["Financial Strategy","Work","Investments","Products & Services"],
+        "Relationships": ["Self Image","Family","Sexual","Social"],
+        "Lifestyle": ["Everyday Life","Productivity","Improvement","Hobbies"]
+    };
+</script>
+
+<p>Life</p>
+<ul data-source="Life" data-identifier="section">
     <li>
         {{section}}
-        <ul data-source="MediumCategorizationObject['{{section}}']" data-identifier="category">
+        <ul data-source="Life['{{section}}']" data-identifier="category">
             <li>{{section}} - {{category}}</li>
-            <ul data-source="MediumCategorizationObject['{{section}}']['{{category}}']" data-identifier="activity">
+        </ul>
+    </li>
+</ul>
+
+<hr>
+<hr>
+
+
+
+
+
+
+
+
+<script>
+    const ExtendedLife = { 
+            "Health and Security": {
+                "Health":["Nutrition","Physical activity","Health monitoring"],
+                "Safety and Security":["Physical security","Self-defence","Disaster handling"]
+            },
+            "Relationships": {        
+                    "Self Image":["Self image","Style and Character","Online social networks"],
+                    "Sexual":["Attraction & Success","Relationship management"]
+            }
+        };
+</script>
+
+<p>ExtendedLife</p>
+<ul data-source="ExtendedLife" data-identifier="section">
+    <li>
+        {{section}}
+        <ul data-source="ExtendedLife['{{section}}']" data-identifier="category">
+            <li>{{section}} - {{category}}</li>
+            <ul data-source="ExtendedLife['{{section}}']['{{category}}']" data-identifier="activity">
                 <li>{{section}} - {{category}} - {{activity}} </li>
             </ul>
         </ul>
@@ -42,17 +95,93 @@
 <hr>
 <hr>
 
-<ul data-source="SmallCategorizationArray" data-identifier="section">
+
+
+
+<script>
+    const ComplexLife = { 
+        "Health and Security": [["Health","Safety and Security"],'health-link'],
+        "Relationships": [["Self Image","Sexual"],'relationships-link'],
+    };
+</script>
+
+
+
+
+
+<p>ComplexLife</p>
+<ul data-source="ComplexLife" data-identifier="section">
     <li>
-        {{section[1]}}
-        <ul data-source="SmallCategorizationArray[*][2]" data-identifier="category">
-            <li>{{2}}</li>
+        {{section}}, [{{section[1]}}]
+        <ul data-source="ComplexLife['{{section}}'][0]" data-identifier="categoryArray">
+            <li>{{section}} - {{categoryArray}}</li>
+        </ul>
+    </li>
+</ul>
+
+<hr>
+<hr>
+
+
+
+
+<p>ComplexLifeOLD</p>
+<ul data-source="ComplexLife" data-identifier="section">
+    <li>
+        {{section}}, [<span data-source="ComplexLife['{{section}}'][1]"></span>], 
+        [<span data-variable>ComplexLife['{{section}}'][1]</span>]
+        <ul data-source="ComplexLife['{{section}}'][0]" data-identifier="categoryArray">
+            <li>{{section}} - {{categoryArray}}</li>
+        </ul>
+    </li>
+</ul>
+
+<hr>
+<hr>
+
+
+
+
+
+
+
+
+<script>
+    const SmallLife = [
+    [
+        "Health and Security", 
+        ["Health","Safety and Security"],
+        "health-link"
+    ],
+    [
+        "Relationships", 
+        ["Self Image","Sexual"],
+        "relationships-link"
+    ]
+];
+</script>
+
+<p>SmallLife</p>
+<ul data-source="SmallLife" data-identifier="section">
+    <li>
+        {{section[1]}} - [click this link: {{section[3]}}]
+        <ul data-source="SmallLife[{{this}}][1]" data-identifier="category">
+            <li>{{section[1]}} - {{category}}</li>
         </ul>
     </li>
 </ul>
 
 
 
-</div>
+
+    
+
+
+
+
+
+
+</div> <!-- body container -->
+
 </body>
 </html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>dimML</title>
+
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
+    <script defer src="dim-ML.js"></script>
+
+    <!-- <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+    <!-- <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> -->
+
+</head>
+<body class="p-5">
+    <div class="container">
+    
+<script>
+    
+let author = 'Dimitris';
+
+
+let cloud = [
+    {par: "rain", color:"blue"},
+    {par: "snow", color:"white"},
+    ["grass","green"],
+    ["rain","red"],
+    "text",
+];
+let rain = [{child:'water'},{child:'drops'}];
+let snow = ['happiness','whiteness'];
+let water = ['transparent'];
+let drops = ['a wonderful level 3','a beautiful level 3']
+
+let people = [
+    ['dimitris','sexy'],['angel','nice']
+]
+let sexy = ['the desired attribute']
+let good = ['very','goody']
+
+let animals = [['pets'],['friends']]
+let pets = {dog:['good','boy']}
+//let friends = {dog:['good','friend']}
+
+
+</script>
+
+
+
+
+<h1>Dim-ML</h1>
+
+<div data-source="author"></div>
+<hr>
+
+
+<p>Original HTML template:
+            <br>This {{par}} is {{color}} and the {{1}} is {{2}} in the {{0}}.</p>
+            
+             <hr>
+            <div data-source="cloud">
+                <p>This {{par}} is {{color}} and the {{1}} is {{2}} in the {{0}} and the {{key}} is the key.
+                <span data-source="{{par}}">
+                  <br>A {{par}}'s child is: {{child}} or {{0}} and {{0}}
+                  <span data-source="{{child}}">, which is {{0}}</span> 
+                </span>
+           
+                </p>     
+             </div>
+
+      <hr>
+             <div data-source="people">
+                <p>One person is {{1}} and he is {{2}} <span data-source="{{2}}">, which is {{0}} </span> </p>
+             </div>
+        <hr>
+
+
+
+
+    <script>
+        let friends = ['John', 'Cate', 'Silvia']
+        let John = ['tall', 'smart']
+        let Silvia = ['blonde', 'beautiful','witty']
+    </script>
+    
+    <p>My friends</p>
+    <div data-source="friends" data-identifier="friend">
+        <ul>
+            <li>
+                My friend, {{friend}}, has these traits:  
+                <span data-source="{{friend}}" data-identifier="trait">{{trait}}, </span>
+            </li>
+        </ul>
+    </div>
+
+
+        <!-- <script>
+            let fruits = ['an apple', 'a banana', 'an orange']
+        </script>    
+        
+        <p>My fruits:</p>
+        <ul data-source="fruits">
+            <li>I have {{0}} to eat!</li>
+        </ul>   -->
+
+
+    <!-- <script>
+        let fruits = [['apple','green'], ['banana','yellow'], ['orange','orange']]
+    </script>    
+    
+    <p>My fruits:</p>
+    <ul data-source="fruits">
+        <li>My {{1}} has a {{2}} color</li>
+    </ul>    -->
+
+    <!-- <script>
+        let fruits = [
+            {fruitName:'apple',fruitColor:'green'}, 
+            {fruitName:'banana',fruitColor:'yellow'}, 
+            {fruitName:'orange',fruitColor:'orange'}
+        ]
+    </script>    
+    
+    <p>My fruits:</p>
+    <ul data-source="fruits">
+        <li>My {{fruitName}} has a {{fruitColor}} color</li>
+    </ul>    -->
+
+
+    <script>
+        let fruitsObj = {
+            name:'apple',
+            color:'green',
+            taste:'nice'
+        };
+    </script>    
+    
+    <ul data-source="fruitsObj">
+        <li>The {{key}} of my fruit is {{value}}!</li>
+    </ul>   
+
+
+
+    </div>
+</body>
+</html>
