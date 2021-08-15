@@ -1,7 +1,7 @@
 # dimML.js
 ## HTML Template engine. Separate your structure from your data.
 A template JS plug-in to separate your structure from your data. Like AppML, but more simple to use, more flexible, and with support for Nested elements. 
-It can populate Arrays or Objects. These can contain either Arrays or Objects! 
+It can populate either Arrays or Objects. These can contain other Arrays or Objects! 
  
 ## By Dimitris Vainanidis (c) 2021. #
 
@@ -17,7 +17,7 @@ I did not bother to write full documentation for this. Just study the examples, 
 
 Start by loading the  ```dim-ML``` script to your page:
 ```HTML
- <script defer src="dim-ML.js"></script>
+ <script defer src="https://dimvai.github.io/dim-ML/dim-ML.js"></script>
 ```
 Then use the `data-variable` attribute to specify the Data to populate. The Data must be an JavaScript Array or a Javascript Object.
 <hr>
@@ -25,7 +25,7 @@ Then use the `data-variable` attribute to specify the Data to populate. The Data
 
 # **1. Examples with simple cases**
 
-## **Single Variable**
+## **1.1 Single Variable**
 
 Use `data-variable` and the inner Text of your div/span will display the value of the variable you provide
 ```HTML
@@ -48,7 +48,7 @@ with output:
 
 <hr>
 
-## **Array of strings**
+## **1.2 Array of strings**
 
 For everything else, use `data-source`. 
 
@@ -71,9 +71,7 @@ The result is:
 
 <hr>
 
-## **Array of arrays**
-
-For everything else, use `data-source`.
+## **1.3 Array of arrays**
 
 For a simple array of strings, use `data-source` to specify the array name and `{{1}}`, `{{2}}` etc for the placeholders. The first element is the `{{1}}`, i.e. the base is `1` (not `0`).
 ```HTML
@@ -95,7 +93,7 @@ The result is:
 
 <hr>
 
-## **Array of objects**
+## **1.4 Array of objects**
 
 For a simple array of objects, use `{{key}}`, for every placeholder.
 ```HTML
@@ -121,7 +119,7 @@ The result is:
 <hr>
 
 
-## **Simple single Object that contains keys and values**
+## **1.5 Simple single Object that contains keys and values**
 
 For simple Objects (Object of keys with values), use `{{0}}` or `{{key}}` for the key and `{{value}}` for the value:
 ```HTML
@@ -148,9 +146,37 @@ The result is:
 <hr>
 <hr>
 
-# **2. Examples with nested cases**
 
-## **Basic example of nested things**
+# **2. dimML methods and parameters**
+
+## **2.1 Set Nested Levels**
+```JavaScript
+    var dimMLnestedLevels = 1;
+```
+**Optionally** execute the above command to manually declare how many levels deep your nested data elements are (read below for nested cases). This command is optional and it is useful only:
+* If you have more than `3` nested levels of data (3 is the default levels if you do not set anything) 
+* For performance reasons, but *only* in the weird case you have *wrongly* set your `data-source` attributes, and you need a security pillar. In  this weird case, a larger than needed number, may will cause degradation of performance when your page loads, because `dimML` will iterate your page without doing anything useful.  So, use the lowest number that works in your case. However, if your `data-source` are set *correctly*, there is no need to set anything (`dimML` is programmed not to iterate further if it has finished populating the data). 
+
+Execute this on your custom .js file or in your HTML inline script, but certainly **before** dimML.js loads. If your HTML `data-source` attributes have been put *wrongly*, 
+
+## **2.2 Update elements when your data changes**
+```JavaScript
+    dimML.update(elementID);
+```
+If your data ever changes, use this `dimML.update` command to re-populate your data in this element. Of course, you must have an id on this HTML element for `update` to work:
+```HTML
+    <ul id="myLife" data-source="Life" data-identifier="section">
+        <!--Template-->
+    </ul>
+```
+In this example, if the Object/Array `Life` changes, in order to update this element with the new data, use 
+```JavaScript
+dimML.update(myLife)
+```
+
+# **3. Examples with nested cases**
+
+## **3.1 Basic example of nested things**
 
 When you use nested elements, a nice thing to use is the `data-identifier` attribute. It is used, so the `{{0}}` of the different nested objects/arrays are not being mixed up / overridden. In this attribute you state how you want to call the element's children in the template. So, you can use `{{newName}}`, instead of `{{0}}` in this case. 
 
@@ -184,7 +210,7 @@ Notice that because there is not a `Cate` array, the output is clear (without er
 <hr>
 
 
-## **Object that contains keys and "array" values**
+## **3.2 Object that contains keys and "array" values**
 
 For an Object with "array" values (its is an extension of a previous case), use `data-identifier="section"`, so its immediate children will be called `section`, to separate its grand-children which will be called `categories`. So the nested sub-list will have the `data-source="Life['{{section}}']"` which is an array, so it can be iterated using the  `data-source` attribute. Notice, that in the nested sub-list, we can display also the `section` variable.
 ```HTML
@@ -230,7 +256,7 @@ The result is:
 
 <hr>
 
-## **Object with triple nested elements!!!**
+## **3.3 Object with triple nested elements!!!**
 
 An extension of the previous example. Here, `ExtendedLife` is an Object that contains objects that contain other objects that contain arrays! Enough comments! Enjoy!
 
@@ -289,12 +315,12 @@ Result:
 <hr>
 <hr>
 
-# **3. Weird Cases**
+# **4. Weird Cases**
 
 
-## **Array that contains Arrays that contain arrays**
+## **4.1 Array that contains Arrays that contain arrays**
 
-Notice that the base is not consistent yet!!! In the element's body, `{{1}}` is the first element of the array, i.e. the base is the `1`. Instead, in the `data-source` attribute, the base is the original Javascript base, i.e. `0`, so the first element is `{{0}`. Sorry about that! I am going to fix that in some next version... 
+Notice that the base is not consistent yet!!! In the element's body, `{{1}}` is the first element of the array, i.e. the base is `1`. Instead, in the `data-source` attribute, the base is the original Javascript base, i.e. `0`, so the first element is `{{0}`. Sorry about that! I am going to fix that in some next version... 
 
 So, you can use `{{this}}` which is going to take as a value the current index (i.e.,0,1,2) in every iteration. So, the `SmallLife[{{this}}][1]"` will be an array, so it can be iterated using the `data-source` attribute. 
 
@@ -337,7 +363,7 @@ Result:
 
 <hr>
 
-## **Object that contains keys and "arrays with arrays" values**
+## **4.2 Object that contains keys and "arrays with arrays" values**
 
 In the following case, `ComplexLife["Health and Security"][0]` is the array `["Health","Safety and Security"]`. In the general case, the `ComplexLife['{{section}}'][0]`, as an array, it can be iterated using the `data-source` attribute. Again, the base in `{{section[1]}}` is not consistent at this moment, so you need to experiment (sorry again!). So: 
 

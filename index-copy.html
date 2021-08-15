@@ -21,6 +21,10 @@
     
 let author = 'Dimitris';
 
+let State = {
+    secret: "My secret Password",
+    secrets: ['Sherlock', 'will find']
+}
 
 let cloud = [
     {par: "rain", color:"blue"},
@@ -53,6 +57,11 @@ let pets = {dog:['good','boy']}
 <h1>Dim-ML</h1>
 
 <div data-source="author"></div>
+<div data-variable>author</div>
+<div data-variable>State['secret']</div>
+<div data-source="State['secret']"></div>
+<div data-source="State['secrets']">{{0}} </div>
+
 <hr>
 
 
