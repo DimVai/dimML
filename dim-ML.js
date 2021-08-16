@@ -17,6 +17,7 @@ let keysOf = (object) => {return Object.keys(object);}
 let log = console.log;
 /** The RegExp that indicates the string that will be replaced by some value. It has the format: {{anything}} */
 let MLdefaultExp = /\{\{(0|key)\}\}/g;
+let MLarrayExp = /\{\{(this|index)\}\}/g;
 let MLexp = /(\{\{.*\}\})/;
 //Important: do not do /g in the regex above! Because it changes if you executed (using "test" method) twice!
 //https://stackoverflow.com/questions/6891545/javascript-regexp-test-returns-false-even-though-it-should-return-true
@@ -118,7 +119,7 @@ var dimML = {
                             if (DataWasObject) { newHTML = newHTML.replaceAll('{{value}}', DataSource[record]) }  
                         }         
                         
-                        newHTML = newHTML.replaceAll(`{{this}}`,recordIndex);  
+                        newHTML = newHTML.replaceAll(MLarrayExp,recordIndex).replaceAll(`{{counter}}`,recordIndex+1);  
                         
                         //finally, append the item
                         element.innerHTML += newHTML;
@@ -135,9 +136,7 @@ var dimML = {
         }
 
         //Finally, clear the rest!
-        document.querySelectorAll('[data-source]').forEach(element =>{
-            element.remove();
-        });
+        document.querySelectorAll('[data-source]').forEach(element =>{element.remove();});
     },
 
 

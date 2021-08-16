@@ -19,7 +19,7 @@ Start by loading the  ```dim-ML``` script to your page:
 ```HTML
  <script defer src="https://dimvai.github.io/dim-ML/dim-ML.js"></script>
 ```
-Then use the `data-variable` attribute to specify the Data to populate. The Data must be an JavaScript Array or a Javascript Object.
+Then use the `data-variable` or `data-source` attribute to specify the Data (JavaScript variable, object or array) to populate.
 <hr>
 <hr>
 
@@ -90,6 +90,17 @@ The result is:
 > * My banana has a yellow color
 > * My orange has a orange color
 
+## *Note:* 
+You can also use `{{this}}` or `{{index}}` in order to return the (parent) array's index, but with base `0`. If, instead of base `0`, you want a counter with base `1` (eg. 1,2,3,), use `{{count}}`. So, if you write:
+```HTML
+    <ul data-source="fruits">
+        <li>[{{Count}}] My {{1}} has a {{2}} color</li>
+    </ul> 
+```
+the result will be:
+> * [1] My apple has a green color
+> * [2] My banana has a yellow color
+> * [3] My orange has a orange color
 
 <hr>
 
@@ -154,10 +165,10 @@ The result is:
     var dimMLnestedLevels = 1;
 ```
 **Optionally** execute the above command to manually declare how many levels deep your nested data elements are (read below for nested cases). This command is optional and it is useful only:
-* If you have more than `3` nested levels of data (3 is the default levels if you do not set anything) 
-* For performance reasons, but *only* in the weird case you have *wrongly* set your `data-source` attributes, and you need a security pillar. In  this weird case, a larger than needed number, may will cause degradation of performance when your page loads, because `dimML` will iterate your page without doing anything useful.  So, use the lowest number that works in your case. However, if your `data-source` are set *correctly*, there is no need to set anything (`dimML` is programmed not to iterate further if it has finished populating the data). 
+* If you have more than `3` nested levels of data (3 is the default levels if you don't set anything) 
+* For performance reasons, but *only* in the weird case you have *wrongly* set your `data-source` attributes, and you need a security pillar. In  this weird case, a larger than needed number, may will cause degradation of performance when your page loads, because `dimML` will iterate your page without doing anything useful.  So, use the lowest number that works in your case. However, if your HTML template (the HTML inside `data-source`) is set *correctly*, there is no need to set anything (`dimML` is programmed not to iterate further if it has finished populating the data). 
 
-Execute this on your custom .js file or in your HTML inline script, but certainly **before** dimML.js loads. If your HTML `data-source` attributes have been put *wrongly*, 
+Execute this on your custom .js file or in your HTML inline script, but certainly **before** dimML.js loads.
 
 ## **2.2 Update elements when your data changes**
 ```JavaScript
@@ -171,7 +182,7 @@ If your data ever changes, use this `dimML.update` command to re-populate your d
 ```
 In this example, if the Object/Array `Life` changes, in order to update this element with the new data, use 
 ```JavaScript
-dimML.update(myLife)
+dimML.update('myLife')
 ```
 
 # **3. Examples with nested cases**
