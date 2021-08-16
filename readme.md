@@ -1,6 +1,6 @@
 # dimML.js
 ## HTML Template engine. Separate your structure from your data.
-A template JS plug-in to separate your structure from your data. Like AppML, but more simple to use, more flexible, and with support for Nested elements. 
+A template JS plug-in to separate your structure from your data. It is like AppML, but more simple to use, more flexible, and with support for Nested elements. 
 It can populate either Arrays or Objects. These can contain other Arrays or Objects! 
  
 ## By Dimitris Vainanidis (c) 2021. #
@@ -10,16 +10,20 @@ It can populate either Arrays or Objects. These can contain other Arrays or Obje
 <hr>
 <hr>
 
-# **Initial note**
+## **Initial notes**
 
 
 I did not bother to write full documentation for this. Just study the examples, and you will understand what you need. Only If you need something special, I mention it below.
 
-Start by loading the  ```dim-ML``` script to your page:
+# **How to use - Summary of the basics**
+
+Start by loading ```dim-ML.js``` to your page. Use `defer`, or, in a general case, load it after the content (html document and data objects/arrays) has been loaded. If your data doesn't get populated, this usually is the problem.  
 ```HTML
  <script defer src="https://dimvai.github.io/dim-ML/dim-ML.js"></script>
 ```
-Then use the `data-variable` or `data-source` attribute to specify the Data (JavaScript variable, object or array) to populate.
+Then, in your HTML, use the `data-source="DataName"` attribute to specify the Data (JavaScript variable, object or array) to populate, and using the notation `{{variable}}` ("double curly brackets"), indicate where the data will be placed. 
+
+**Important!** The inner HTML of `data-source` is what will be repeated. 
 <hr>
 <hr>
 
@@ -27,7 +31,9 @@ Then use the `data-variable` or `data-source` attribute to specify the Data (Jav
 
 ## **1.1 Single Variable**
 
-Use `data-variable` and the inner Text of your div/span will display the value of the variable you provide
+We start with an exception(!), because this is the simplest case. In this example we simply display a JavaScript variable, without anything to get repeated (hence, the exception).
+
+ Use `data-variable` and the inner Text of your div/span will display the value of the variable you provide
 ```HTML
     <script>
         let authorName = 'Dimitris'
@@ -106,7 +112,7 @@ the result will be:
 
 ## **1.4 Array of objects**
 
-For a simple array of objects, use `{{key}}`, for every placeholder.
+For a simple array of objects, use `{{key}}`, for every placeholder. We remind you that the inner HTML of the `data-source` is the content that gets repeated. 
 ```HTML
     <script>
         let fruits = [
