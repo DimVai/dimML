@@ -35,16 +35,17 @@ var dimML = {
      */
     populate: function(nestedLevels = 3){
 
-        /** system iteration variable */
-        let iteration = 1;
+        /** Just for return purposes (without reason!). All sources */
+        let DataSources = [];
 
-        while (iteration <= nestedLevels && document.querySelectorAll('[data-source]').length > 0) {   
+        for (let iteration = 1; (iteration <= nestedLevels) && (document.querySelectorAll('[data-source]').length > 0); iteration++) {   
 
             //log({iteration})   
             document.querySelectorAll('[data-source]').forEach((element)=>{             // jshint ignore:line
                 
                 /** The name of the data array as a string */
                 const dataSourceName = element.attributes['data-source'].value;
+                DataSources.push(dataSourceName);
                 //log(dataSourceName)
                 const identifier = element.getAttribute('data-identifier')||"";
 
@@ -132,26 +133,32 @@ var dimML = {
                 }     
                 //log(element.outerHTML); 
             });
-            iteration++;
-        }
+        }  //"for" iterations loop
 
         //Finally, clear the rest!
         document.querySelectorAll('[data-source]').forEach(element =>{element.remove();});
+
+        //Just to return something
+        return DataSources;
     },
 
 
 
     /** evaluate when data-variable exists. Use evalVariables() or evalVariables(document.querySelector('#thatDiv'))  */
     evalVariables: function(element=document, keepAttribute=false) {
-        element.querySelectorAll('[data-variable]').forEach(e => {
+        let elementList = element.querySelectorAll('[data-variable]');
+        elementList.forEach(e => {
             try{e.innerText = eval(e.innerText)}catch{}
             if (!keepAttribute) {e.removeAttribute('data-variable')}
         })
+        return elementList;
     },
 
     update: function(elementID){
-        document.getElementById(elementID).outerHTML = this.originalElements[elementID];
+        let element = document.getElementById(elementID);
+        element.outerHTML = this.originalElements[elementID];
         this.populate();
+        return element;
     }
 
 

@@ -21,7 +21,7 @@ Start by loading ```dim-ML.js``` to your page. Use `defer`, or, in a general cas
 ```HTML
  <script defer src="https://dimvai.github.io/dim-ML/dim-ML.js"></script>
 ```
-Then, in your HTML, use the `data-source="DataName"` attribute to specify the Data (JavaScript variable, object or array) to populate, and using the notation `{{variable}}` ("double curly brackets"), indicate where the data will be placed. 
+Then, in your HTML, use the `data-source="DataName"` attribute to specify the Data (JavaScript variable, object or array) to populate, and, using the notation `{{variable}}` ("double curly brackets"), indicate where the data will be placed. 
 
 **Important!** The inner HTML of `data-source` is what will be repeated. 
 <hr>
