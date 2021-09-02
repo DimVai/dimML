@@ -17,7 +17,7 @@ I did not bother to write full documentation for this. Just study the examples, 
 
 # **How to use - Summary of the basics**
 
-Start by loading ```dim-ML.js``` to your page. Use `defer`, or, in a general case, load it after the content (html document and data objects/arrays) has been loaded. If your data doesn't get populated, this usually is the problem.  
+Start by loading ```dim-ML.js``` to your page. Use `defer`, or, in a general case, load it after the content (html document and data objects/arrays) has been loaded. If your data doesn't get populated, this is usually the problem.  
 ```HTML
  <script defer src="https://dimvai.github.io/dim-ML/dim-ML.js"></script>
 ```
@@ -219,7 +219,7 @@ To nest things, use  `data-source="{{upper}}"` to point to the "upper" thing. Wi
 ```
 The result is:
 > My friends:
-> * My friend, John, has these traits: tall, smart
+> * My friend, John, has these traits: tall smart
 > * My friend, Cate, has these traits:
 > * My friend, Silvia, has these traits: blonde beautiful witty
 
@@ -229,7 +229,7 @@ Notice that because there is not a `Cate` array, the output is clear (without er
 
 ## **3.2 Object that contains keys and "array" values**
 
-For an Object with "array" values (its is an extension of a previous case), use `data-identifier="section"`, so its immediate children will be called `section`, to separate its grand-children which will be called `categories`. So the nested sub-list will have the `data-source="Life['{{section}}']"` which is an array, so it can be iterated using the  `data-source` attribute. Notice, that in the nested sub-list, we can display also the `section` variable.
+For an Object with "array" values (its is an extension of a previous case), use `data-identifier="section"`, so its immediate children will be called `section`, to separate its grand-children which will be called `category`. So the nested sub-list will have the `data-source="Life['{{section}}']"` which is an array, so it can be iterated using the  `data-source` attribute. Notice, that in the nested sub-list, we can display also the `section` variable.
 ```HTML
 <script>
     const Life = { 
