@@ -31,7 +31,7 @@ var dimML = {
 
     /**
      * Execute the dimML job
-     * @param {number} nestedLevels The maxumum number of levels to go deep
+     * @param {number} nestedLevels The maximum number of levels to go deep
      */
     populate: function(nestedLevels = 3){
 
@@ -168,7 +168,7 @@ var dimML = {
 let defaultNestedLevels = 3;  
 var dimMLnestedLevels;
 //if user has not set this manually, set to 3 (defaultNestedLevels) 
-dimMLnestedLevels ??= defaultNestedLevels;       // jshint ignore:line
+dimMLnestedLevels = dimMLnestedLevels||defaultNestedLevels;       // jshint ignore:line
 
 }       //end of local block
 
