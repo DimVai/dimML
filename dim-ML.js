@@ -26,7 +26,7 @@ let MLexpArg = letter => {return new RegExp(`\\{\\{${letter}\\[(\\d)\\]\\}\\}`,'
 /** The dimML Object */
 var dimML = {
 
-    /** Stores the original outerHtML of elements, so as to be updated later */
+    /** Stores the original outerHTML of elements, so as to be updated later */
     originalElements: {},
 
     /**
