@@ -1,7 +1,7 @@
 # dimML.js
 ## HTML Template engine. Separate your structure from your data.
-A template JS plug-in to separate your structure from your data. It is like AppML, but more simple to use, more flexible, and with support for Nested elements. 
-It can populate either Arrays or Objects. These can contain other Arrays or Objects! 
+A template JS plug-in to separate your structure from your data. It is like AppML, but more simple to use, more flexible, and with support for nested elements. 
+It can populate either Arrays or Objects. These can contain other (nested) Arrays or Objects! 
  
 ## By Dimitris Vainanidis (c) 2021. #
 
@@ -10,20 +10,21 @@ It can populate either Arrays or Objects. These can contain other Arrays or Obje
 <hr>
 <hr>
 
-## **Initial notes**
+# **How to use - Summary of the procedure**
 
+1. Start by loading ```dimML.js``` to your page. The recommended way is to use `defer`. In the general case, it must be executed after the HTML content AND the required JavaScript data have been loaded.
 
-I did not bother to write full documentation for this. Just study the examples, and you will understand what you need. Only If you need something special, I mention it below.
-
-# **How to use - Summary of the basics**
-
-Start by loading ```dim-ML.js``` to your page. Use `defer`, or, in a general case, load it after the content (html document and data objects/arrays) has been loaded. If your data doesn't get populated, this is usually the problem.  
 ```HTML
- <script defer src="https://dimvai.github.io/dim-ML/dim-ML.js"></script>
+    <script defer src="https://dimvai.github.io/dimML/dimML.js"></script>
 ```
-Then, in your HTML, use the `data-source="DataName"` attribute to specify the Data (JavaScript variable, object or array) to populate, and, using the notation `{{variable}}` ("double curly brackets"), indicate where the data will be placed. 
+2. Then, in your HTML, use the `data-source="DataName"` attribute in the parent element to specify the data (JavaScript variable, object or array) to populate. Also, use the notation `{{variable}}` ("double curly brackets") as the placeholders for the data in the elements HTML. Below, there are a lot of examples that show how to do this step, here is just a summary. Note that the inner HTML of the div/span that has the `data-source` attribute is the thing will be repeated for every data element.
 
-**Important!** The inner HTML of `data-source` is what will be repeated. 
+3. If you have nested data, you can use `var dimMLnestedLevels=3` to define that you have nested structure of depth 3. Below, there are more details. 
+
+
+## *Note:* 
+If your data doesn't get populated, the problem is usually that the above code tries to execute before HTML has been loaded or the JavaScript variables/arrays/objects that contain the data have been loaded. If anything fails, and you can't get your scripts to work in order, you can always run the dimML script with the command `dimML.populate()` at any moment (for example, when you make sure that everything has been loaded).
+
 <hr>
 <hr>
 
@@ -31,34 +32,35 @@ Then, in your HTML, use the `data-source="DataName"` attribute to specify the Da
 
 ## **1.1 Single Variable**
 
-We start with an exception(!), because this is the simplest case. In this example we simply display a JavaScript variable, without anything to get repeated (hence, the exception).
+This is the simplest case. In this example we simply display a JavaScript variable, without anything to get repeated.
 
- Use `data-variable` and the inner Text of your div/span will display the value of the variable you provide
+ Use `data-source` and the innerText of your div/span will display the value of the variable you provide
 ```HTML
     <script>
         let authorName = 'Dimitris'
     </script>
 
-    <div data-variable>authorName</div>
-
+    <span data-source="authorName"></span>
 ```
 The result converts to :
+```HTML
+    <span>Dimitris</span>
 ```
-    <div>Dimitris</div>
-```
-with output: 
+with displayed output: 
 ```
     Dimitris
 ```
+## *Note:* 
+Only in this case of a single simple variable (not array or object) the **entire** innerText of the span will be overwritten. 
 
 
 <hr>
 
 ## **1.2 Array of strings**
 
-For everything else, use `data-source`. 
+For a simple array of strings, use `data-source` to specify the array name and `{{0}}` for the placeholder.  
 
-For a simple array of strings, use `data-source` to specify the array name and `{{0}}` for the placeholder.  The inner HTML of the div/span that has the `data-source` attribute, is what will be repeated. 
+
 ```HTML
     <script>
         let fruits = ['an apple', 'a banana', 'an orange']
@@ -74,6 +76,8 @@ The result is:
 > * I have a banana to eat!
 > * I have an orange to eat!
 
+## *Note:* 
+The inner content of the div/span that has the `data-source` attribute, in this case the `li`, is what will get repeated. 
 
 <hr>
 
@@ -133,6 +137,8 @@ The result is:
 > * My banana has a yellow color
 > * My orange has a orange color
 
+Again and again: what is inside `data-source` is the thing that gets repeated. 
+
 <hr>
 
 
@@ -164,36 +170,83 @@ The result is:
 <hr>
 
 
-# **2. dimML methods and parameters**
+# **2. Methods and Parameters**
 
-## **2.1 Set Nested Levels**
+## **2.1 Optional - Set nested levels**
+
+If you have nested levels of data inside other data, use **one** of the following two commands **before** the `dimML.js` gets loaded/run (for example, in an inline script or on a "previous" .js file)
+
 ```JavaScript
-    var dimMLnestedLevels = 1;
+    var dimMLnestedLevels = 3;
+    window.dimMLnestedLevels = 3;
 ```
-**Optionally** execute the above command to manually declare how many levels deep your nested data elements are (read below for nested cases). This command is optional and it is useful only:
-* If you have more than `3` nested levels of data (3 is the default levels if you don't set anything) 
-* For performance reasons, but *only* in the weird case you have *wrongly* set your `data-source` attributes, and you need a security pillar. In  this weird case, a larger than needed number, may will cause degradation of performance when your page loads, because `dimML` will iterate your page without doing anything useful.  So, use the lowest number that works in your case. However, if your HTML template (the HTML inside `data-source`) is set *correctly*, there is no need to set anything (`dimML` is programmed not to iterate further if it has finished populating the data). 
-
-Execute this on your custom .js file or in your HTML inline script, but certainly **before** dimML.js loads.
+This is optional, the default parameter is `1`, and it is useful only if you have nested levels of data. For performance reasons, do not set this higher than it should be, although `dimML` is smart enough to stop running in most cases. If anything fails, you can always re-run the dimML by:
+```JavaScript
+    dimML.populate(n)       // n is the number of nested levels
+```
 
 ## **2.2 Update elements when your data changes**
 ```JavaScript
     dimML.update(elementID);
 ```
-If your data ever changes, use this `dimML.update` command to re-populate your data in this element. Of course, you must have an id on this HTML element for `update` to work:
+If your data ever changes, use the `dimML.update()` method to re-populate your data in this element. Of course, you must have an id on this HTML element for `update` to work:
 ```HTML
-    <ul id="myLife" data-source="Life" data-identifier="section">
+    <ul id="myLife" data-source="Life">
         <!--Template-->
     </ul>
 ```
-In this example, if the Object/Array `Life` changes, in order to update this element with the new data, use 
+In this example, if the Object/Array `Life` changes, in order to update this element with the new data, run 
 ```JavaScript
 dimML.update('myLife')
 ```
+<hr>
+<hr>
 
-# **3. Examples with nested cases**
+# **3. Identifiers and Separators**
 
-## **3.1 Basic example of nested things**
+## **3.1 Identifiers**
+The `data-identifier` attribute is very useful when you want to have nested cases. You can see examples below. In the simple cases, this is not required, and can only be used to make your HTML code look more *understandable*. So, instead if using `{{0}}`, you can give your variables a name using `{{identifier}}`:
+
+```HTML
+    <script>
+        let myTraits = ['Nice', 'Sexy', 'Witty']
+    </script>
+
+    <ul data-source="myTraits" data-identifier="trait">
+        <li>One of my traits is: {{trait}}</>
+    </ul>
+```
+
+The output is:
+> * One of my traits is: nice
+> * One of my traits is: sexy
+> * One of my traits is: witty
+
+<hr>
+
+## **3.2 Separators**
+The `data-separator` is used when you want to specify a "separator" between your repeated blocks of text. The most common of these is the comma separator `", "` so we use it as an example here:
+
+```HTML
+    <script>
+        let myTraits = ['nice', 'sexy', 'witty']
+    </script>
+
+    <p>My traits are 
+        <span data-source="myTraits" data-separator=", ">{{0}}</span>.
+    </p>
+```
+
+The output is separated by comma:
+> My traits are nice, sexy, witty.
+
+
+<hr>
+<hr>
+
+# **4. Examples with nested cases**
+
+## **4.1 Basic example of nested things**
 
 When you use nested elements, a nice thing to use is the `data-identifier` attribute. It is used, so the `{{0}}` of the different nested objects/arrays are not being mixed up / overridden. In this attribute you state how you want to call the element's children in the template. So, you can use `{{newName}}`, instead of `{{0}}` in this case. 
 
@@ -204,30 +257,33 @@ To nest things, use  `data-source="{{upper}}"` to point to the "upper" thing. Wi
  <script>
      let friends = ['John', 'Cate', 'Silvia']
      let John = ['tall', 'smart']
+     // not declaring Cate on purpose...
      let Silvia = ['blonde', 'beautiful','witty']
  </script>
  
 <p>My friends</p>
-<div data-source="friends" data-identifier="friend">
-    <ul>
-        <li>
-            My friend, {{friend}}  
-            <span data-source="{{friend}}" data-identifier="trait"> has these traits: {{trait}} </span>
-        </li>
-    </ul>
-</div>
+<ul data-source="friends" data-identifier="friend">
+    <li>
+        My friend, {{friend}}, has these traits:  
+        <span data-source="{{friend}}" data-identifier="trait" data-separator=", ">{{trait}}</span>
+    </li>
+</ul>
 ```
 The result is:
-> My friends:
-> * My friend, John, has these traits: tall smart
-> * My friend, Cate, has these traits:
-> * My friend, Silvia, has these traits: blonde beautiful witty
 
-Notice that because there is not a `Cate` array, the output is clear (without errors or ugly `{{things}}`). 
+> My friends:
+> * My friend, John, has these traits: tall, smart
+> * My friend, Cate, has these traits: {{trait}}
+> * My friend, Silvia, has these traits: blonde, beautiful, witty
+
+## *Note:* 
+1. Notice that because there is not a `Cate` array, the output is the *unchanged* {{trait}} in order to indicate that `Cate` was not found. In order to fix that, you can simply have `let Cate = []`, so the output will be empty. 
+2. Remember to set `var dimMLnestedLevels = 3` before `dimML.js` runs! 
+3. Again and again and again: what is inside `data-source` is the thing that gets repeated.
 <hr>
 
 
-## **3.2 Object that contains keys and "array" values**
+## **4.2 Object that contains keys and "array" values**
 
 For an Object with "array" values (its is an extension of a previous case), use `data-identifier="section"`, so its immediate children will be called `section`, to separate its grand-children which will be called `category`. So the nested sub-list will have the `data-source="Life['{{section}}']"` which is an array, so it can be iterated using the  `data-source` attribute. Notice, that in the nested sub-list, we can display also the `section` variable.
 ```HTML
@@ -242,8 +298,7 @@ For an Object with "array" values (its is an extension of a previous case), use 
 
 <p>Life:</p>
 <ul data-source="Life" data-identifier="section">
-    <li>
-        {{section}}
+    <li>{{section}}
         <ul data-source="Life['{{section}}']" data-identifier="category">
             <li>{{section}} - {{category}}</li>
         </ul>
@@ -273,7 +328,7 @@ The result is:
 
 <hr>
 
-## **3.3 Object with triple nested elements!!!**
+## **4.3 Object with triple nested elements!!!**
 
 An extension of the previous example. Here, `ExtendedLife` is an Object that contains objects that contain other objects that contain arrays! Enough comments! Enjoy!
 
@@ -295,8 +350,7 @@ Source HTML:
 
 <p>ExtendedLife</p>
 <ul data-source="ExtendedLife" data-identifier="section">
-    <li>
-        {{section}}
+    <li>{{section}}
         <ul data-source="ExtendedLife['{{section}}']" data-identifier="category">
             <li>{{section}} - {{category}}</li>
             <ul data-source="ExtendedLife['{{section}}']['{{category}}']" data-identifier="activity">
@@ -332,10 +386,10 @@ Result:
 <hr>
 <hr>
 
-# **4. Weird Cases**
+# **5. Weird Cases (avoid them if you can)**
 
 
-## **4.1 Array that contains Arrays that contain arrays**
+## **5.1 Array that contains Arrays that contain arrays**
 
 Notice that the base is not consistent yet!!! In the element's body, `{{1}}` is the first element of the array, i.e. the base is `1`. Instead, in the `data-source` attribute, the base is the original Javascript base, i.e. `0`, so the first element is `{{0}`. Sorry about that! I am going to fix that in some next version... 
 
@@ -380,7 +434,7 @@ Result:
 
 <hr>
 
-## **4.2 Object that contains keys and "arrays with arrays" values**
+## **5.2 Object that contains keys and "arrays with arrays" values**
 
 In the following case, `ComplexLife["Health and Security"][0]` is the array `["Health","Safety and Security"]`. In the general case, the `ComplexLife['{{section}}'][0]`, as an array, it can be iterated using the `data-source` attribute. Again, the base in `{{section[1]}}` is not consistent at this moment, so you need to experiment (sorry again!). So: 
 
@@ -428,6 +482,36 @@ The above result can be obtained also with another way, using the fact that that
 <hr>
 <hr>
 
+# **All commands, attributes & methods associated with dimML**
+
+HTML attributes:
+```Javascript
+data-source="variable/array/object"
+data-identifier="newNameOfItem"
+data-separator="separator"
+```
+HTML placeholders to be replaced:
+```JavaScript
+{{0}}                   // when source is a simple array of values
+{{1}} {{2}} ...         // when source is an array of arrays
+{{this}} {{index}}      // will be replaced with array's index
+{{count}}               // will be replaced with array's index+1
+{{objectProperty}}      // [custom property] when source is an array of objects
+{{key}} {{value}}       // when source is an object
+{{identifier}}          // [custom identifier] to use in nested cases
+{{category[index]}}     // [custom identifier with index] in weird nested cases
+```
+JavaScript dimML commands and methods:
+```JavaScript
+var dimMLnestedLevels = n;          //set nested levels before dimML runs
+dimML.populate(nestedLevels=1);     //call with optional nested depth
+dimML.update(elementId)             //update a specific element
+```
+
+
+<hr>
+<hr>
 
 # **Enjoy!**
+
 

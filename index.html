@@ -7,12 +7,10 @@
     
     <title>DimML</title>
 
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
-    <script defer src="dim-ML.js"></script>
     <link rel="shortcut icon" href="DML.png" type="image/x-icon">
 
-    <!-- <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
-    <!-- <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> -->
+    <script defer src="dimML.js"></script>
+    <script> window.dimMLnestedLevels=3</script>
 
 </head>
 <body class="p-5">
@@ -20,18 +18,12 @@
     
 
 
-<script>
-    //var dimMLnestedLevels = 2;
-</script>
-
-
-
 <h1>Dim-ML</h1>
 
 <script>let author = 'Dimitris'</script>
 
 <div id="testDiv">
-<div data-variable>author</div>
+<div data-source="author">author</div>
 </div>
 <hr>
 
@@ -173,12 +165,6 @@
         </ul>
     </li>
 </ul>
-
-
-
-
-    
-
 
 
 
