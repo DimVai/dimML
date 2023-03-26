@@ -23,7 +23,7 @@ It can populate either Arrays or Objects. These can contain other (nested) Array
 
 
 ## *Note:* 
-If your data doesn't get populated, the problem is usually that the above code tries to execute before HTML has been loaded or the JavaScript variables/arrays/objects that contain the data have been loaded. If anything fails, and you can't get your scripts to work in order, you can always run the dimML script with the command `dimML.populate()` at any moment (for example, when you make sure that everything has been loaded).
+If your data doesn't get populated, the problem is usually that the above code tries to execute before HTML has been loaded or before the JavaScript variables/arrays/objects that contain the data have been loaded. That's why `defer` is prefered. (If anything fails, and you can't get your scripts to work in order, you can always run the dimML script with the command `dimML.populate()` at any moment, for example, when you make sure that everything has been loaded).
 
 <hr>
 <hr>
@@ -101,10 +101,10 @@ The result is:
 > * My orange has a orange color
 
 ## *Note:* 
-You can also use `{{this}}` or `{{index}}` in order to return the (parent) array's index, but with base `0`. If, instead of base `0`, you want a counter with base `1` (eg. 1,2,3,), use `{{count}}`. So, if you write:
+You can also use `{{this}}` or `{{index}}` in order to return the (parent) array's index, but with base `0`. If, instead of base `0`, you want a counter with base `1` (eg. 1,2,3,), use `{{counter}}`. So, if you write:
 ```HTML
     <ul data-source="fruits">
-        <li>[{{Count}}] My {{1}} has a {{2}} color</li>
+        <li>[{{counter}}] My {{1}} has a {{2}} color</li>
     </ul> 
 ```
 the result will be:
@@ -205,7 +205,7 @@ dimML.update('myLife')
 # **3. Identifiers and Separators**
 
 ## **3.1 Identifiers**
-The `data-identifier` attribute is very useful when you want to have nested cases. You can see examples below. In the simple cases, this is not required, and can only be used to make your HTML code look more *understandable*. So, instead if using `{{0}}`, you can give your variables a name using `{{identifier}}`:
+The `data-identifier` attribute is very useful when you want to have nested cases. You can see examples below. In the simple cases, this is not required, and can only be used to make your HTML code look more *easily comprehensible / understood*. So, instead if using `{{0}}`, you can give your variables a name using `{{identifier}}`:
 
 ```HTML
     <script>
@@ -503,9 +503,9 @@ HTML placeholders to be replaced:
 ```
 JavaScript dimML commands and methods:
 ```JavaScript
-var dimMLnestedLevels = n;          //set nested levels before dimML runs
-dimML.populate(nestedLevels=1);     //call with optional nested depth
-dimML.update(elementId)             //update a specific element
+var dimMLnestedLevels = n;          // set nested levels before dimML runs
+dimML.populate(nestedLevels=1);     // call with optional nested depth
+dimML.update(elementId)             // update a specific element
 ```
 
 
